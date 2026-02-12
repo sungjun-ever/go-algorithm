@@ -31,6 +31,7 @@ func closeStrings(word1 string, word2 string) bool {
 		}
 	}
 
+	// 배열을 슬라이스로 변
 	sort.Ints(c1[:])
 	sort.Ints(c2[:])
 
