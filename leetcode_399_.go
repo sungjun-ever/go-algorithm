@@ -2,7 +2,8 @@ package main
 
 // 경로 문제로 접근
 // a / b, b / c가 존재할 때
-// a / c 면 a -> b -> c 로 가는 경로를 탐색하는걸로 접
+// a / c 면 a -> b -> c 로 가는 경로를 탐색하는걸로 접근
+// (a / b) * (b / c) 이전 방적식의 값을 가중치로 생각하고 곱해줌
 func calcEquation(equations [][]string, values []float64, queries [][]string) []float64 {
 	graph := make(map[string]map[string]float64)
 	for i := 0; i < len(values); i++ {
