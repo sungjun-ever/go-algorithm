@@ -81,6 +81,7 @@ func letterCombinationsBackTrack(digits string) []string {
 	}
 
 	var ans []string
+	// 하나의 공유 배열만 사용
 	var path []byte
 
 	var backtrack func(index int)
@@ -93,8 +94,11 @@ func letterCombinationsBackTrack(digits string) []string {
 		currLetters := letterMap[digits[index]-'0']
 
 		for i := 0; i < len(currLetters); i++ {
+			// 글자를 넣고
 			path = append(path, currLetters[i])
+			// 탐색
 			backtrack(index + 1)
+			// 방금 넣었던 글자를 뺌
 			path = path[:len(path)-1]
 		}
 	}
