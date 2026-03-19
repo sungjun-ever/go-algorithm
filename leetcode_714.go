@@ -1,24 +1,26 @@
 package main
 
 func maxProfit(prices []int, fee int) int {
-	// H: 들고 있을 때, F: 안 들고 있을때
-	// 보유중이려면
-	// 안 팔면 H[i] = H[i-1]
-	// 산다면: H[i] = F[i-1] - prices[i]
-	// H[i] = max(H[i-1], F[i-1] - prices[i])
+	/**
+	  두 가지 상태가 존재한다.
 
-	// 빈손이려면
-	// 안 사면 F[i] = F[i-1]
-	// 팔면: F[i] = H[i-1] - prices[i] - fee
-	// F[i] = max(F[i-1], H[i-1] + prices[i] - fee)
-	h := 0 - prices[0] // 첫 날 주식을 들고있으려면
-	f := 0             // 첫 날 빈 손이면
-	n := len(prices)
+	  1. 가지고 있는 상태 h
+	      1. 사거나 h[i] = f[i-1] - prices[i] 빈손인 현재 상태 값에서 금액을 빼줌
+	      2. 산 상태를 유지할 때 h[i] = h[i-1] 전 상태값을 그대로 가져감
+	      3. 둘 중 더 큰 값을 가져감
+	  2. 빈 손인 상태 f
+	      1. 팔거나 f[i] = h[i-1] + prices[i] - fee
+	      2. 빈손 유지 f[i] = f[i-1]
+		  3. 둘 중 더 큰 값을 가져감
+	*/
 
-	for i := 1; i < n; i++ {
-		h, f = max(h, f-prices[i]), max(f, h+prices[i]-fee)
+	h := 0 - prices[0] // 첫 날 보유 중
+	f := 0             // 첫 날 미보유중
+
+	for i := 1; i < len(prices); i++ {
+		price := prices[i]
+		h, f = max(h, f-price), max(f, h+price-fee)
 	}
 
 	return max(h, f)
-
 }
