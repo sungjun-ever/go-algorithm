@@ -34,6 +34,49 @@ func main() {
 	// 4방향 배열
 	dirs := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 
+	useBfs(n, grid, &ans, dirs)
+
+	sort.Ints(ans)
+	fmt.Println(len(ans))
+	for _, v := range ans {
+		fmt.Println(v)
+	}
+}
+
+func useBfs(n int, grid [][]int, ans *[]int, dirs [4][2]int) {
+	visited := make([][]bool, n)
+	for i := 0; i < n; i++ {
+		visited[i] = make([]bool, n)
+	}
+
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			if grid[i][j] == 1 && !visited[i][j] {
+				count := 1
+				queue := [][2]int{{i, j}}
+				visited[i][j] = true
+
+				for len(queue) > 0 {
+					curr := queue[0]
+					queue = queue[1:]
+
+					for _, dir := range dirs {
+						nx, ny := curr[0]+dir[0], curr[1]+dir[1]
+
+						if nx >= 0 && nx < n && ny >= 0 && ny < n && grid[nx][ny] == 1 && !visited[nx][ny] {
+							count++
+							queue = append(queue, [2]int{nx, ny})
+							visited[nx][ny] = true
+						}
+					}
+				}
+				*ans = append(*ans, count)
+			}
+		}
+	}
+}
+
+func useDfs(n int, grid [][]int, ans *[]int, dirs [4][2]int) {
 	var dfs func(int, int) int
 	dfs = func(x, y int) int {
 		grid[x][y] = 0
@@ -57,14 +100,9 @@ func main() {
 	for x := 0; x < n; x++ {
 		for y := 0; y < n; y++ {
 			if grid[x][y] == 1 {
-				ans = append(ans, dfs(x, y))
+				*ans = append(*ans, dfs(x, y))
 			}
 		}
 	}
 
-	sort.Ints(ans)
-	fmt.Println(len(ans))
-	for _, v := range ans {
-		fmt.Println(v)
-	}
 }
