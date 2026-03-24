@@ -37,6 +37,36 @@ func main() {
 
 	// 해당 컴퓨터 확인 여부용
 	visited := make([]bool, m)
+
+	useBfs(m, n, grid, visited)
+}
+
+func useBfs(m, n int, grid [][]int, visited []bool) {
+	queue := make([]int, 0, m)
+	queue = append(queue, 0)
+	visited[0] = true
+	count := 0
+	for len(queue) > 0 {
+		curr := queue[0]
+		queue = queue[1:]
+
+		for next := 1; next < m; next++ {
+			// 연결 되어있는 경우
+			if grid[curr][next] == 1 && !visited[next] {
+				visited[next] = true
+				grid[curr][next] = 0
+				grid[next][curr] = 0
+				queue = append(queue, next)
+				count++
+			}
+		}
+	}
+
+	fmt.Println(count)
+}
+
+func useDfs(m, n int, grid [][]int, visited []bool) {
+
 	// 오염된 컴퓨터 수 확인용
 	count := 0
 
