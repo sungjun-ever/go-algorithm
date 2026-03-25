@@ -20,11 +20,14 @@ func main() {
 
 	grid := make([][]int, n)
 	queue := make([][2]int, 0)
+
 	for i := 0; i < n; i++ {
 		grid[i] = make([]int, m)
 
 		for j := 0; j < m; j++ {
 			fmt.Fscan(reader, &grid[i][j])
+
+			// 루프를 돌면서 익은 토마토는 큐에 미리 넣어놓는다
 			if grid[i][j] == 1 {
 				queue = append(queue, [2]int{i, j})
 			}
@@ -33,13 +36,13 @@ func main() {
 
 	dirs := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
 
-	// 모든 익은 토마토에서 동시에 출발함
 	for len(queue) > 0 {
 		curr := queue[0]
 		queue = queue[1:]
-
 		for _, d := range dirs {
 			nx, ny := curr[0]+d[0], curr[1]+d[1]
+
+			// 범위 안에 있고 안익은 경우에만
 			if nx >= 0 && nx < n && ny >= 0 && ny < m && grid[nx][ny] == 0 {
 				grid[nx][ny] = grid[curr[0]][curr[1]] + 1
 				queue = append(queue, [2]int{nx, ny})
@@ -47,22 +50,22 @@ func main() {
 		}
 	}
 
+	// 하나라도 0인게 있으면 -1
 	maxDay := 0
 	for i := 0; i < n; i++ {
 		for j := 0; j < m; j++ {
-			// 안 익은게 존재한다면
 			if grid[i][j] == 0 {
-				fmt.Fprintln(writer, -1)
+				fmt.Fprint(writer, -1)
 				return
-			} else {
-				maxDay = max(maxDay, grid[i][j])
 			}
+			maxDay = max(maxDay, grid[i][j])
 		}
 	}
 
+	// 시작 지점이 1부터 시작이기 때문에 -1
 	if maxDay == 0 {
-		fmt.Fprintln(writer, -1)
+		fmt.Fprint(writer, -1)
 	} else {
-		fmt.Fprintln(writer, maxDay-1)
+		fmt.Fprint(writer, maxDay-1)
 	}
 }
