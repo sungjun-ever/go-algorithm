@@ -52,12 +52,12 @@ func main() {
 			curr := queue[0]
 			queue = queue[1:]
 
+			if curr.x == n-1 && curr.y == m-1 {
+				return visited[curr.x][curr.y][curr.broken]
+			}
+
 			for _, d := range dirs {
 				nx, ny := curr.x+d[0], curr.y+d[1]
-
-				if curr.x == n-1 && curr.y == m-1 {
-					return visited[curr.x][curr.y][curr.broken]
-				}
 
 				if nx >= 0 && nx < n && ny >= 0 && ny < m {
 					// 다음이 벽이고 아직 벽을 부순적 없을때
