@@ -20,28 +20,45 @@ func sort(list []int, left, right int) {
 }
 
 func partition(list []int, left, right int) int {
-	pivot := list[left] // 첫 원소를 기준으로
-	low := left + 1     // 첫 원소 다음 원소를 최솟값으로 잡음
-	high := right
-
-	for low <= high { // 교차할 때까지 반복
-		for low <= right && list[low] <= pivot {
-			low++
+	// 기준점 가운데
+	mid := left + (right-left)/2
+	pivot := list[mid]
+	i := left - 1
+	for j := left; j <= right; j++ {
+		if list[j] < pivot {
+			i++
+			list[i], list[j] = list[j], list[i]
 		}
-
-		for left <= high && list[high] > pivot {
-			high--
-		}
-
-		if low < high {
-			list[low], list[high] = list[high], list[low]
-		}
-
 	}
 
-	// 피벗 위치를 가운데로 옮김
-	list[left], list[high] = list[high], list[left]
+	list[mid], list[i+1] = list[i+1], list[mid]
+	return i + 1
+	// 기준점 오른쪽
+	// pivot := list[right]
+	// i := left - 1
 
-	// 피벗 위치 리턴
-	return high
+	// for j := left; j <= right; j++ {
+	// 	if list[j] < pivot {
+	// 		i++
+	// 		list[i], list[j] = list[j], list[i]
+	// 	}
+	// }
+
+	// list[right], list[i+1] = list[i+1], list[right]
+	// return i + 1
+
+	// 기준점 왼쪽
+	// pivot := list[left]
+	// i := left
+
+	// for j := left + 1; j <= right; j++ {
+	// 	if list[j] < pivot {
+	// 		i++
+	// 		list[i], list[j] = list[j], list[i]
+	// 	}
+	// }
+
+	// list[left], list[i] = list[i], list[left]
+
+	// return i
 }
