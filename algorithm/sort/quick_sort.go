@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// 평균적으로 매운 빠른 정렬 속도를 가지며 추가적인 메모리 사용이 적은 고성능 정렬이다
 func main() {
 	list := []int{38, 27, 43, 3, 9, 82, 10, 21}
 	n := len(list)
@@ -21,18 +22,27 @@ func sort(list []int, left, right int) {
 
 func partition(list []int, left, right int) int {
 	// 기준점 가운데
-	mid := left + (right-left)/2
+	mid := left + (right-left)/2 //
 	pivot := list[mid]
-	i := left - 1
-	for j := left; j <= right; j++ {
-		if list[j] < pivot {
-			i++
-			list[i], list[j] = list[j], list[i]
+	l, r := left, right
+
+	for l <= r {
+		for list[l] < pivot {
+			l++
+		}
+
+		for list[r] > pivot {
+			r--
+		}
+
+		if l <= r {
+			list[l], list[r] = list[r], list[l]
+			l++
+			r--
 		}
 	}
 
-	list[mid], list[i+1] = list[i+1], list[mid]
-	return i + 1
+	return l
 	// 기준점 오른쪽
 	// pivot := list[right]
 	// i := left - 1
