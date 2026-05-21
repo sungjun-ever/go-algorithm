@@ -46,3 +46,39 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 
 	return root
 }
+
+// 다른 풀이 참고 방법
+// 해시맵을 사용해 inorder 인덱스 찾기 최적화 버전?
+func buildTree2(preorder []int, inorder []int) *TreeNode {
+	inorderMap := make(map[int]int, len(inorder))
+
+	// 미리 인덱스 저장
+	for i, n := range inorder {
+		inorderMap[n] = i
+	}
+
+	// preordeIndex 추적
+	preIdx := 0
+
+	var recursive func(start, end int) *TreeNode
+
+	recursive = func(start, end int) *TreeNode {
+		if start > end {
+			return nil
+		}
+
+		// 먼저 루트를 지정
+		root := &TreeNode{Val: preorder[preIdx]}
+		// 맵에서 inorder 인덱스를 가져온다
+		idx := inorderMap[preorder[preIdx]]
+		preIdx++
+
+		// idx기준으로 왼쪽 오른쪽
+		root.Left = recursive(start, idx-1)
+		root.Right = recursive(idx+1, end)
+
+		return root
+	}
+
+	return recursive(0, len(preorder)-1)
+}
